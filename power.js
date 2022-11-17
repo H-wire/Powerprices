@@ -16,7 +16,7 @@ const toggleBasedOnCheapestHours = async (firstRun = false) => {
     const sortedHours = records
       .sort((a, b) => a.SpotPriceEUR - b.SpotPriceEUR)
       .slice(0, 8);
-    const cheapestHours = sortedHours.map(({ SpotPriceEUR }) => SpotPriceEUR);
+    const cheapestHours = sortedHours.map(({ HourUTC }) => new Date(HourUTC).getHours());
 
     console.log(sortedHours);
 
