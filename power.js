@@ -20,7 +20,7 @@ const toggleBasedOnCheapestHours = async (firstRun = false) => {
   const currentLocalDate = convertUTCDateToLocalDate(new Date()).toISOString().split("T")[0];
   const currentHour = new Date().getHours();
   const response = await fetch(
-    `https://api.energidataservice.dk/dataset/elspotprices?start=${currentLocalDate}T00:00&end=${currentLocalDate}T23:00&columns=HourUTC%2CSpotPriceEUR&filter=%7B%22PriceArea%22%3A%20%22SE3%22%7D`
+    `https://api.energidataservice.dk/dataset/elspotprices?start=${currentLocalDate}T00:00&end=${currentLocalDate}T23:59&columns=HourUTC%2CSpotPriceEUR&filter=%7B%22PriceArea%22%3A%20%22SE3%22%7D`
   );
 
   const { records } = await response.json();
