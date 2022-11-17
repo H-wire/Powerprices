@@ -8,17 +8,20 @@ const toggleBasedOnCheapestHours = async () => {
   const { records } = await response.json();
 
   if (records.length > 0) {
-    const cheapestHours = records
+    const sortedHours = records
       .sort((a, b) => a.SpotPriceEUR - b.SpotPriceEUR)
-      .map(({ SpotPriceEUR }) => SpotPriceEUR)
       .slice(0, 8);
+    const cheapestHours = sortedHours.map(({ SpotPriceEUR }) => SpotPriceEUR);
+
+    console.log(sortedHours);
+
     if (cheapestHours.includes(currentHour)) {
-      console.log("Turning on");
+      console.log(new Date().toISOString(), "Turning on");
       fetch("http://192.168.1.73/rpc/Switch.Set?id=0&on=false");
       return;
     }
 
-    console.log("Turning off");
+    console.log(new Date().toISOString(), "Turning off");
     fetch("http://192.168.1.73/rpc/Switch.Set?id=0&on=true");
     return;
   }
