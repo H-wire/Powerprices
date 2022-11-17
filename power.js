@@ -1,4 +1,9 @@
-const toggleBasedOnCheapestHours = async () => {
+const toggleBasedOnCheapestHours = async (firstRun = false) => {
+  const currentMinutes = new Date().getMinutes();
+  if (currentMinutes > 0 && !firstRun) {
+    return;
+  }
+
   const currentDate = new Date().toISOString().split("T")[0];
   const currentHour = new Date().getHours();
   const response = await fetch(
@@ -29,6 +34,5 @@ const toggleBasedOnCheapestHours = async () => {
   console.log("Error: Could not fetch prices");
 };
 
-// Run immediately and every hour
-toggleBasedOnCheapestHours();
-setInterval(toggleBasedOnCheapestHours, 3600000);
+toggleBasedOnCheapestHours(true);
+setInterval(toggleBasedOnCheapestHours, 60000);
