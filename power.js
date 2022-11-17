@@ -14,12 +14,12 @@ const toggleBasedOnCheapestHours = async () => {
       .slice(0, 8);
     if (cheapestHours.includes(currentHour)) {
       console.log("Turning on");
-      fetch("http://192.168.1.73/rpc/Switch.Set?id=0&on=true");
+      fetch("http://192.168.1.73/rpc/Switch.Set?id=0&on=false");
       return;
     }
 
     console.log("Turning off");
-    fetch("http://192.168.1.73/rpc/Switch.Set?id=0&on=false");
+    fetch("http://192.168.1.73/rpc/Switch.Set?id=0&on=true");
     return;
   }
 
