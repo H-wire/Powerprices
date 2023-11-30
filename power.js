@@ -40,7 +40,7 @@ const toggleBasedOnCheapestHours = async (firstRun = false) => {
       console.log("Error: Could not fetch current temperature");
     }
 
-    const hoursToBeTurnedOn = () => {
+    const hoursToBeTurnedOn = (() => {
       switch (true) {
         case currentTemperature < -15:
           return 23;
@@ -51,7 +51,7 @@ const toggleBasedOnCheapestHours = async (firstRun = false) => {
         default:
           return 8;
       }
-    };
+    })();
 
     const sortedHours = records
       .sort((a, b) => a.SpotPriceEUR - b.SpotPriceEUR)
