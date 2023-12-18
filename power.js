@@ -1,3 +1,5 @@
+const LOW_PRICE_THRESHOLD = 50;
+
 const convertUTCDateToLocalDate = (date) => {
   const newDate = new Date(
     date.getTime() + date.getTimezoneOffset() * 60 * 1000
@@ -60,12 +62,17 @@ const toggleBasedOnCheapestHours = async (firstRun = false) => {
       new Date(HourUTC).getHours()
     );
 
-    console.log(sortedHours);
+    const currentPrice = records.find(
+      ({ HourUTC }) => new Date(HourUTC).getHours() === currentHour
+    ).SpotPriceEUR;
 
-    if (cheapestHours.includes(currentHour)) {
+    if (
+      currentPrice <= LOW_PRICE_THRESHOLD ||
+      cheapestHours.includes(currentHour)
+    ) {
       console.log(
         new Date().toISOString(),
-        `Turning on - Current temp: ${currentTemperature}`
+        `Turning on - Current price: ${currentPrice} - Current temp: ${currentTemperature}`
       );
       fetch("http://192.168.1.73/rpc/Switch.Set?id=0&on=false");
       return;
@@ -73,7 +80,7 @@ const toggleBasedOnCheapestHours = async (firstRun = false) => {
 
     console.log(
       new Date().toISOString(),
-      `Turning off - Current temp: ${currentTemperature}`
+      `Turning off - Current price: ${currentPrice} - Current temp: ${currentTemperature}`
     );
     fetch("http://192.168.1.73/rpc/Switch.Set?id=0&on=true");
     return;
