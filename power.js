@@ -1,4 +1,4 @@
-const LOW_PRICE_THRESHOLD = 50;
+const LOW_PRICE_THRESHOLD = 0.5;
 
 const convertUTCDateToLocalDate = (date) => {
   const newDate = new Date(
@@ -56,20 +56,25 @@ const toggleBasedOnCheapestHours = async (firstRun = false) => {
     })();
 
     const sortedHours = records
+      .filter(({ SpotPriceEUR }) => SpotPriceEUR > LOW_PRICE_THRESHOLD)
       .sort((a, b) => a.SpotPriceEUR - b.SpotPriceEUR)
       .slice(0, hoursToBeTurnedOn);
-    const cheapestHours = sortedHours.map(({ HourUTC }) =>
-      new Date(HourUTC).getHours()
+
+    const lowPriceHours = records.filter(
+      ({ SpotPriceEUR }) => SpotPriceEUR <= LOW_PRICE_THRESHOLD
     );
+    const combinedHours = [...lowPriceHours, ...sortedHours];
+    const cheapestHours = combinedHours.map(
+      ({ HourUTC }) => new Date(HourUTC).getHours()
+    );
+
+    console.log(combinedHours);
 
     const currentPrice = records.find(
       ({ HourUTC }) => new Date(HourUTC).getHours() === currentHour
     ).SpotPriceEUR;
 
-    if (
-      currentPrice <= LOW_PRICE_THRESHOLD ||
-      cheapestHours.includes(currentHour)
-    ) {
+    if (cheapestHours.includes(currentHour)) {
       console.log(
         new Date().toISOString(),
         `Turning on - Current price: ${currentPrice} - Current temp: ${currentTemperature}`
