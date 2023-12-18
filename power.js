@@ -1,4 +1,4 @@
-const LOW_PRICE_THRESHOLD = 0.5;
+const LOW_PRICE_THRESHOLD = 50;
 
 const convertUTCDateToLocalDate = (date) => {
   const newDate = new Date(
