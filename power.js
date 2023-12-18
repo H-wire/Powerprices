@@ -63,9 +63,11 @@ const toggleBasedOnCheapestHours = async (firstRun = false) => {
     const lowPriceHours = records.filter(
       ({ SpotPriceEUR }) => SpotPriceEUR <= LOW_PRICE_THRESHOLD
     );
-    const combinedHours = [...lowPriceHours, ...sortedHours];
-    const cheapestHours = combinedHours.map(
-      ({ HourUTC }) => new Date(HourUTC).getHours()
+    const combinedHours = [...lowPriceHours, ...sortedHours].sort(
+      (a, b) => a.SpotPriceEUR - b.SpotPriceEUR
+    );
+    const cheapestHours = combinedHours.map(({ HourUTC }) =>
+      new Date(HourUTC).getHours()
     );
 
     console.log(combinedHours);
