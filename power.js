@@ -45,7 +45,7 @@ const toggleBasedOnCheapestHours = async (firstRun = false) => {
     const hoursToBeTurnedOn = (() => {
       switch (true) {
         case currentTemperature < -15:
-          return 23;
+          return 21;
         case currentTemperature < -10:
           return 18;
         case currentTemperature < -5:
